@@ -1,79 +1,56 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Native Modules Test: Audio Recording in React Native
 
-# Getting Started
+This project demonstrates the implementation of native modules in React Native, specifically focusing on audio recording functionality with background support on Android.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Project Overview
 
-## Step 1: Start the Metro Server
+This React Native application showcases the integration of native Android modules to enable audio recording capabilities. Key features include:
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+- Custom native module for audio recording
+- Background audio recording using Android's foreground services
+- Support for Android API level 34 and above
 
-To start Metro, run the following command from the _root_ of your React Native project:
+## Technical Implementation
 
-```bash
-# using npm
-npm start
+The project includes the following key components:
 
-# OR using Yarn
-yarn start
-```
+1. `AudioRecorderModule`: A React Native bridge module that exposes audio recording functions to JavaScript.
+2. `AudioRecorderService`: A Kotlin service that handles the actual audio recording functionality.
+3. `AudioRecorderForegroundService`: An Android foreground service that allows audio recording to continue in the background.
 
-## Step 2: Start your Application
+## Getting Started
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+### Prerequisites
 
-### For Android
+Ensure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) before proceeding.
 
-```bash
-# using npm
-npm run android
+### Installation
 
-# OR using Yarn
-yarn android
-```
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   
+### Running the Application
 
-### For iOS
+1. Start the Metro server:
 
-```bash
-# using npm
-npm run ios
+   ```bash
+   npm start
+   # or
+   yarn start
 
-# OR using Yarn
-yarn ios
-```
+2. Run the app on Android:
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+   ```bash
+   npm run android
+   # or
+   yarn android
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+### Usage
+The app provides a simple interface to start and stop audio recording. The recording will continue even when the app is in the background, thanks to the implemented foreground service.
 
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+### Permissions
+No code has been added to handle permissions on this test app. Make sure to manually grant the necessary permissions for audio recording and background services.
