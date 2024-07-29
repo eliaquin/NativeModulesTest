@@ -1,22 +1,23 @@
 package com.nativemodulestest
 
+import android.content.Intent
 import com.facebook.react.bridge.*
-import java.io.IOException
 
-class AudioRecorderModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
+class AudioRecorderModule(private val reactContext: ReactApplicationContext) :
+    ReactContextBaseJavaModule(reactContext) {
 
-    private val audioRecorderService = AudioRecorderService(reactContext)
-
-    override fun getName(): String {
-        return "AudioRecorderModule"
-    }
+    override fun getName(): String = "AudioRecorderModule"
 
     @ReactMethod
     fun startRecording(suffix: String, promise: Promise) {
         try {
-            val result = audioRecorderService.startRecording(suffix)
-            promise.resolve(result)
-        } catch (e: IOException) {
+            val intent = Intent(reactContext, AudioRecorderForegroundService::class.java).apply {
+                action = "START_RECORDING"
+                putExtra("suffix", suffix)
+            }
+            reactContext.startForegroundService(intent)
+            promise.resolve("Recording started")
+        } catch (e: Exception) {
             promise.reject("AUDIO_RECORD_ERROR", "Failed to start recording: ${e.message}")
         }
     }
@@ -24,8 +25,11 @@ class AudioRecorderModule(reactContext: ReactApplicationContext) : ReactContextB
     @ReactMethod
     fun stopRecording(promise: Promise) {
         try {
-            val filePath = audioRecorderService.stopRecording()
-            promise.resolve(filePath)
+            val intent = Intent(reactContext, AudioRecorderForegroundService::class.java).apply {
+                action = "STOP_RECORDING"
+            }
+            reactContext.startForegroundService(intent)
+            promise.resolve("Recording stopped")
         } catch (e: Exception) {
             promise.reject("AUDIO_RECORD_ERROR", "Failed to stop recording: ${e.message}")
         }

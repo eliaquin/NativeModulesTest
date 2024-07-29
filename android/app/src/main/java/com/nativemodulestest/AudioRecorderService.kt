@@ -5,12 +5,12 @@ import android.media.MediaRecorder
 import java.io.File
 import java.io.IOException
 
-class AudioRecorderService(private val context: Context) {
+class AudioRecorderService {
     private var mediaRecorder: MediaRecorder? = null
     private var audioFile: File? = null
 
     @Throws(IOException::class)
-    fun startRecording(suffix: String): String {
+    fun startRecording(context: Context, suffix: String): String {
         if (mediaRecorder != null) {
             throw IOException("Recording already in progress")
         }
