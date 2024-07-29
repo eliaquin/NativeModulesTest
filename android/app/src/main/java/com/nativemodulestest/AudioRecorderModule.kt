@@ -1,15 +1,11 @@
 package com.nativemodulestest
 
-import android.media.MediaRecorder
-import android.os.Environment
 import com.facebook.react.bridge.*
-import java.io.File
 import java.io.IOException
 
 class AudioRecorderModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
-    private var mediaRecorder: MediaRecorder? = null
-    private var audioFile: File? = null
+    private val audioRecorderService = AudioRecorderService(reactContext)
 
     override fun getName(): String {
         return "AudioRecorderModule"
@@ -18,20 +14,8 @@ class AudioRecorderModule(reactContext: ReactApplicationContext) : ReactContextB
     @ReactMethod
     fun startRecording(suffix: String, promise: Promise) {
         try {
-            mediaRecorder = MediaRecorder().apply {
-                setAudioSource(MediaRecorder.AudioSource.MIC)
-                setOutputFormat(MediaRecorder.OutputFormat.AMR_NB) // Optimized for voice
-                setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB) // Optimized for voice
-                setAudioEncodingBitRate(12200) // Standard bitrate for AMR-NB
-                setAudioSamplingRate(8000) // Standard sample rate for AMR-NB
-
-                audioFile = File(reactApplicationContext.getExternalFilesDir(null), "audio_record_${suffix}.amr")
-                setOutputFile(audioFile?.absolutePath)
-
-                prepare()
-                start()
-            }
-            promise.resolve("Recording started")
+            val result = audioRecorderService.startRecording(suffix)
+            promise.resolve(result)
         } catch (e: IOException) {
             promise.reject("AUDIO_RECORD_ERROR", "Failed to start recording: ${e.message}")
         }
@@ -40,12 +24,8 @@ class AudioRecorderModule(reactContext: ReactApplicationContext) : ReactContextB
     @ReactMethod
     fun stopRecording(promise: Promise) {
         try {
-            mediaRecorder?.apply {
-                stop()
-                release()
-            }
-            mediaRecorder = null
-            promise.resolve(audioFile?.absolutePath)
+            val filePath = audioRecorderService.stopRecording()
+            promise.resolve(filePath)
         } catch (e: Exception) {
             promise.reject("AUDIO_RECORD_ERROR", "Failed to stop recording: ${e.message}")
         }
